@@ -11,12 +11,14 @@ import { LinearGradient } from 'expo-linear-gradient'
 import { StatusBar } from 'expo-status-bar'
 import AppLoading from 'expo-app-loading'
 
-import { RatingBar } from './components'
+import { Button, RatingBar } from './components'
 import { useFonts } from 'expo-font'
 
 const heroBadImageSource = require('./assets/hero-bad.png')
 const heroGoodImageSource = require('./assets/hero-good.png')
 const heroGreatImageSource = require('./assets/hero-great.png')
+
+const ratingMessages = ['Terrible', 'Bad', 'Not bad', 'Good', 'Incredible']
 
 export default function App() {
   const [rating, setRating] = useState(1)
@@ -58,11 +60,11 @@ export default function App() {
           <View style={styles.ratingContainer}>
             <Text style={styles.ratingTitle}>Rate The Service</Text>
             <RatingBar onChange={value => setRating(value)} />
-            <Text style={styles.ratingResult}>Incredible</Text>
+            <Text style={styles.ratingResult}>
+              {ratingMessages[rating - 1]}
+            </Text>
           </View>
-          <TouchableOpacity style={styles.ratingButton}>
-            <Text style={styles.ratingButtonLabel}>Give Feedback</Text>
-          </TouchableOpacity>
+          <Button label="Give Feedback" />
         </ImageBackground>
       </LinearGradient>
     </>
@@ -106,18 +108,5 @@ const styles = StyleSheet.create({
     marginTop: 20,
     fontWeight: 'bold',
     color: 'gray',
-  },
-  ratingButton: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    margin: 20,
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    backgroundColor: '#F8BF1C',
-    borderRadius: 8,
-  },
-  ratingButtonLabel: {
-    fontSize: 25,
-    fontFamily: 'Montserrat',
   },
 })

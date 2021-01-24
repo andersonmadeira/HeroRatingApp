@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native'
 
 export interface RatingBarProps {
   onChange: (value: number) => void
@@ -28,13 +28,14 @@ export function RatingBar({ onChange, value = 1, total = 5 }: RatingBarProps) {
 
         return (
           <TouchableOpacity
+            key={ratingNumber}
             onPress={() => {
               const newRating = ratingNumber
               setRating(newRating)
               onChange(newRating)
             }}
           >
-            <Image key={i} style={styles.ratingStar} source={starImageSource} />
+            <Image style={styles.ratingStar} source={starImageSource} />
           </TouchableOpacity>
         )
       })}
