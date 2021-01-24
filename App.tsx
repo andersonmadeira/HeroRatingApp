@@ -9,7 +9,10 @@ import {
 } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { StatusBar } from 'expo-status-bar'
+import AppLoading from 'expo-app-loading'
+
 import { RatingBar } from './components'
+import { useFonts } from 'expo-font'
 
 const heroBadImageSource = require('./assets/hero-bad.png')
 const heroGoodImageSource = require('./assets/hero-good.png')
@@ -17,6 +20,13 @@ const heroGreatImageSource = require('./assets/hero-great.png')
 
 export default function App() {
   const [rating, setRating] = useState(1)
+  const [fontsLoaded] = useFonts({
+    Montserrat: require('./assets/fonts/MR.ttf'),
+  })
+
+  if (!fontsLoaded) {
+    return <AppLoading />
+  }
 
   const heroImageSource =
     rating > 4
@@ -79,6 +89,7 @@ const styles = StyleSheet.create({
   },
   ratingTitle: {
     fontSize: 22,
+    fontFamily: 'Montserrat',
     marginBottom: 20,
     opacity: 0.4,
   },
@@ -91,6 +102,7 @@ const styles = StyleSheet.create({
   },
   ratingResult: {
     fontSize: 30,
+    fontFamily: 'Montserrat',
     marginTop: 20,
     fontWeight: 'bold',
     color: 'gray',
@@ -106,5 +118,6 @@ const styles = StyleSheet.create({
   },
   ratingButtonLabel: {
     fontSize: 25,
+    fontFamily: 'Montserrat',
   },
 })
