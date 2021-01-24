@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   Image,
   ImageBackground,
@@ -9,8 +9,24 @@ import {
 } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { StatusBar } from 'expo-status-bar'
+import { RatingBar } from './components'
+
+const heroBadImageSource = require('./assets/hero-bad.png')
+const heroGoodImageSource = require('./assets/hero-good.png')
+const heroGreatImageSource = require('./assets/hero-great.png')
 
 export default function App() {
+  const [rating, setRating] = useState(1)
+
+  const heroImageSource =
+    rating > 4
+      ? heroGreatImageSource
+      : rating >= 3
+      ? heroGoodImageSource
+      : heroBadImageSource
+
+  const heroElement = <Image style={styles.hero} source={heroImageSource} />
+
   return (
     <>
       <StatusBar style="light" />
@@ -19,39 +35,19 @@ export default function App() {
           source={require('./assets/bgstripe.png')}
           style={styles.background}
         >
-          <ImageBackground
-            source={require('./assets/great-bg-sprite.png')}
-            style={styles.backgroundConfetti}
-          >
-            <Image
-              style={styles.hero}
-              source={require('./assets/hero-bad.png')}
-            />
-          </ImageBackground>
+          {rating >= 4 ? (
+            <ImageBackground
+              source={require('./assets/great-bg-sprite.png')}
+              style={styles.heroContainer}
+            >
+              {heroElement}
+            </ImageBackground>
+          ) : (
+            <View style={styles.heroContainer}>{heroElement}</View>
+          )}
           <View style={styles.ratingContainer}>
             <Text style={styles.ratingTitle}>Rate The Service</Text>
-            <View style={styles.ratingBar}>
-              <Image
-                style={styles.ratingStar}
-                source={require('./assets/goldstar.png')}
-              />
-              <Image
-                style={styles.ratingStar}
-                source={require('./assets/goldstar.png')}
-              />
-              <Image
-                style={styles.ratingStar}
-                source={require('./assets/silverstar.png')}
-              />
-              <Image
-                style={styles.ratingStar}
-                source={require('./assets/silverstar.png')}
-              />
-              <Image
-                style={styles.ratingStar}
-                source={require('./assets/silverstar.png')}
-              />
-            </View>
+            <RatingBar onChange={value => setRating(value)} />
             <Text style={styles.ratingResult}>Incredible</Text>
           </View>
           <TouchableOpacity style={styles.ratingButton}>
@@ -75,7 +71,7 @@ const styles = StyleSheet.create({
     flex: 1,
     resizeMode: 'contain',
   },
-  backgroundConfetti: {
+  heroContainer: {
     height: 400,
     resizeMode: 'cover',
     alignItems: 'center',
@@ -92,15 +88,6 @@ const styles = StyleSheet.create({
     padding: 20,
     marginHorizontal: 20,
     borderRadius: 10,
-  },
-  ratingBar: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-  },
-  ratingStar: {
-    width: 40,
-    height: 40,
-    marginRight: 10,
   },
   ratingResult: {
     fontSize: 30,
